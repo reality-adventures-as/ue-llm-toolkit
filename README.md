@@ -1,5 +1,7 @@
 # UE LLM Toolkit
 
+> **Reality Adventures fork.** Upstream is [ColtonWilley/ue-llm-toolkit](https://github.com/ColtonWilley/ue-llm-toolkit). Our changes (Mac support, `blueprint_modify` fixes, a working bridge lockfile) are listed in [FORK.md](FORK.md); Mac and Claude Code setup is in [docs/mac-setup.md](docs/mac-setup.md). The rest of this README is upstream's.
+
 **Give your AI the ability to actually *see inside* your Unreal project.**
 
 A pure C++ plugin that exposes **37 tools** and **200+ operations** over HTTP, giving LLMs read/write access to major editor subsystems. Drop it into any UE 5.7 project and get a `localhost` REST API that works with [Claude Code](https://claude.ai/claude-code), Cursor, Windsurf, or any HTTP client. No Python runtime in the editor. No MCP lock-in. Just HTTP + JSON.
