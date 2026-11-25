@@ -18,7 +18,7 @@ YourProject/
   YourProject.uproject
 ```
 
-`ue-tool.sh` finds the `.uproject` in the folder above its own, so it has to sit in `<project>/Scripts/`.
+`ue-tool.sh` can sit anywhere, as long as `json-compact.py` sits next to it. Only `launch` and `restart` need the `.uproject`: they look for it in the current directory and the folders above it, so run them from inside the project.
 
 ```bash
 rsync -a --exclude node_modules --exclude Binaries --exclude Intermediate Plugin/UELLMToolkit/ "<project>/Plugins/UELLMToolkit/"
