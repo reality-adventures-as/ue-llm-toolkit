@@ -27,7 +27,10 @@ Tried and dropped: a `Comment` node type for `blueprint_modify`. The tool stores
 
 ## Updating from upstream
 
+A fresh clone has no `upstream` remote yet:
+
 ```bash
+git remote add upstream https://github.com/ColtonWilley/ue-llm-toolkit.git
 git fetch upstream
 git merge upstream/main
 ```
@@ -36,4 +39,16 @@ Expect conflicts in `UELLMToolkit.uplugin` (engine version and platform lists) a
 
 ## Using it in a project
 
-To use it in a project, copy `Plugin/UELLMToolkit/` into the project's `Plugins/` and `Scripts/ue-tool.sh` into its `Scripts/` (leaving `node_modules`, `Binaries` and `Intermediate` alone), then rebuild. To bring a change made in a project back here, copy the changed files over and commit them.
+Add the whole repo as a git submodule in the project's `Plugins/` folder:
+
+```bash
+git submodule add https://github.com/reality-adventures-as/ue-llm-toolkit.git Plugins/UELLMToolkit
+git config -f .gitmodules submodule.Plugins/UELLMToolkit.branch main
+cd Plugins/UELLMToolkit/Plugin/UELLMToolkit/Resources/mcp-bridge && npm ci
+```
+
+- **Where the plugin ends up:** `Plugins/UELLMToolkit/Plugin/UELLMToolkit/`. UE and UBT search `Plugins/` recursively and stop at the first `.uplugin`, so the extra level is fine.
+- **Ignored files:** this repo's `.gitignore` covers the plugin's `Binaries/` and `Intermediate/` and the bridge's `node_modules/`, so the submodule stays clean after a build.
+- **`ue-tool.sh`:** it can run from `Plugins/UELLMToolkit/Scripts/`. For `Scripts/ue-tool.sh` in the project, use a small wrapper that `exec`s it.
+- **Editing the plugin from the project:** the submodule's HEAD is detached after `git submodule update`, so `git switch main` before editing. Commit and push here first, then commit the new submodule pointer in the project. A pointer to an unpushed commit breaks other clones.
+- **Other clones of the project:** after the pull that turns a plain copy into the submodule, delete the leftover plugin folder (old `Binaries`/`Intermediate` block the checkout), then `git submodule update --init`, `npm ci` and rebuild.
